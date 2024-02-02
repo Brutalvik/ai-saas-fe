@@ -14,8 +14,10 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const VideoPage = () => {
+  const { onOpen } = useProModal();
   const router = useRouter();
 
   const [video, setVideo] = useState<string>();
