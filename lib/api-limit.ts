@@ -16,7 +16,7 @@ export const increaseApiLimit = async () => {
   if (userApiLimit) {
     await prismadb.userApiLimit.update({
       where: { userId: userId },
-      data: { count: userApiLimit.count++ },
+      data: { count: userApiLimit.count + 1 },
     });
   } else {
     await prismadb.userApiLimit.create({
