@@ -37,7 +37,9 @@ const VideoPage = () => {
       setVideo(response?.data[0]);
       form.reset();
     } catch (error: any) {
-      //TODO Open pro modal
+      if (error?.response?.status === 403) {
+        onOpen();
+      }
       console.log("ERROR : ", error);
     } finally {
       router.refresh();

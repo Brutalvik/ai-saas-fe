@@ -47,7 +47,9 @@ const CodePage = () => {
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
     } catch (error: any) {
-      //TODO Open pro modal
+      if (error?.response?.status === 403) {
+        onOpen();
+      }
       console.log(error);
     } finally {
       router.refresh();
