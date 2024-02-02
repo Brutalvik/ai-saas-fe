@@ -1,7 +1,7 @@
 "use client";
 
 import Heading from "@/components/heading";
-import { Music } from "lucide-react";
+import { VideoIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -15,10 +15,10 @@ import axios from "axios";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 
-const MusicPage = () => {
+const VideoPage = () => {
   const router = useRouter();
 
-  const [music, setMusic] = useState<string>();
+  const [video, setVideo] = useState<string>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,9 +32,9 @@ const MusicPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log("onsubmit triggered");
     try {
-      setMusic(undefined);
-      const response = await axios.post("/api/music", values);
-      setMusic(response?.data?.audio);
+      setVideo(undefined);
+      const response = await axios.post("/api/video", values);
+      setVideo(response?.data[0]);
       form.reset();
     } catch (error: any) {
       //TODO Open pro modal
@@ -47,11 +47,11 @@ const MusicPage = () => {
   return (
     <div>
       <Heading
-        title="Music Generation"
-        description="Turn your prompts into music"
-        icon={Music}
-        iconColor="text-emerald-500"
-        bgColor="bg-emerald-500/10"
+        title="Video Generation"
+        description="Turn your prompts into a video"
+        icon={VideoIcon}
+        iconColor="text-orange-700"
+        bgColor="bg-orange-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -68,7 +68,7 @@ const MusicPage = () => {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible: ring-transparent"
                         disabled={isLoading}
-                        placeholder="Piano solo"
+                        placeholder="An astronaut riding a horse"
                         {...field}
                       />
                     </FormControl>
@@ -90,17 +90,19 @@ const MusicPage = () => {
               <Loader />
             </div>
           )}
-          {!music && !isLoading && (
+          {!video && !isLoading && (
             <div>
               <Empty label="Let your imagination fly" />
             </div>
           )}
-          {music && (
+          {video && (
             <div className="mt-8">
-              <audio controls className="w-full">
-                <source src={music} type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
+              <video
+                className="w-full aspect-video mt-8 rounded-lg border bg-black"
+                controls
+              >
+                <source src={video} />
+              </video>
             </div>
           )}
         </div>
@@ -109,4 +111,4 @@ const MusicPage = () => {
   );
 };
 
-export default MusicPage;
+export default VideoPage;
